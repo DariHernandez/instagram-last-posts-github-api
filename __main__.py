@@ -19,6 +19,7 @@ post_num = credentials.get ("post_num")
 show_browser = not credentials.get ("show_browser")
 chrome_data_folder = credentials.get ("chrome_data_folder")
 github_repo = credentials.get ("github_repo")
+wait_login = credentials.get ("wait_login")
 
 
 def download_image (url:str, filename:str):
@@ -43,10 +44,13 @@ def save_data ():
     """
 
     # Open scraper
-    scraper = Web_scraping (headless=show_browser, 
-                            chrome_folder=chrome_data_folder, 
-                            start_killing=True)
+    scraper = Web_scraping (web_page="https://www.instagram.com/",
+                            headless=show_browser, 
+                            chrome_folder=chrome_data_folder)
     sleep (2)
+    
+    if wait_login:
+        input ("continue?")
 
     # Loop for each user in profile lists
     data = {}
