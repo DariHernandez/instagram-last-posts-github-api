@@ -6,12 +6,8 @@ import zipfile
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
-import webdriver_manager
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.utils import ChromeType
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 current_file = os.path.basename(__file__)
@@ -148,19 +144,19 @@ class Web_scraping ():
 
         
         # Set configuration to  and create instance
-        chromedriver = ChromeDriverManager(chrome_type=ChromeType.GOOGLE, 
-                                            log_level='0', 
-                                            print_first_line=False).install()
-        self.driver = webdriver.Chrome(chromedriver, 
-                                options=options, 
-                                service_log_path=None,
-                                desired_capabilities=capabilities)
+        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
+                                    options=options, 
+                                    service_log_path=None,
+                                    desired_capabilities=capabilities)
 
         # Clean terminal
         # os.system('cls||clear')
         
         if self.__web_page: 
-            self.driver.get (self.__web_page)
+            try:
+                self.driver.get (self.__web_page)
+            except:
+                pass
 
             # Wait to load page
             # time.sleep (self.basetime*5)
