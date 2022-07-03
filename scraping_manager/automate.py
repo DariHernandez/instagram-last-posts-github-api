@@ -61,6 +61,7 @@ class Web_scraping ():
         if start_killing: 
             command = 'taskkill /IM "chrome.exe" /F'
             os.system (command)
+            time.sleep (3)
 
         # Create and instance of the web browser 
         self.__set_browser_instance()
