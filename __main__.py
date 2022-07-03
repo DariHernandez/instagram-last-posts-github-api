@@ -1,6 +1,7 @@
 import os
 import math
 import json
+import datetime
 import requests
 from time import sleep
 from config import Config
@@ -10,6 +11,15 @@ from scraping_manager.automate import Web_scraping
 current_path = os.path.dirname (__file__)
 images_path = os.path.join (current_path, "imgs")
 json_path = os.path.join (current_path, "data.json")
+
+# Get credentials
+credentials = Config ()
+profiles = credentials.get ("profiles")
+post_num = credentials.get ("post_num")
+show_browser = not credentials.get ("show_browser")
+chrome_data_folder = credentials.get ("chrome_data_folder")
+github_repo = credentials.get ("github_repo")
+
 
 def download_image (url:str, filename:str):
     """Download image from instagram and save it as a local file in imgs folder
@@ -28,17 +38,9 @@ def download_image (url:str, filename:str):
         image.write (chunk)
     image.close ()
 
-def main (): 
+def save_data (): 
     """Save instagram data in json file, and download images.
     """
-
-    # Get credentials
-    credentials = Config ()
-    profiles = credentials.get ("profiles")
-    post_num = credentials.get ("post_num")
-    show_browser = not credentials.get ("show_browser")
-    chrome_data_folder = credentials.get ("chrome_data_folder")
-    github_repo = credentials.get ("github_repo")
 
     # Open scraper
     scraper = Web_scraping (headless=show_browser, 
@@ -137,7 +139,16 @@ def main ():
     with open (json_path, "w") as file:
         file.write (json.dumps(data))
 
+def upload_github ():
+
+    # make commit and upload to github
+    time_str = str(datetime.datetime.now())[:22]
+
+    # Commit and push files
+    os.system (f'git add -A')
+    os.system (f'git commit -m "update {time_str}"')
+    os.system (f'git push origin master')
 
 if __name__ == "__main__":
-    main()
-    input ("end?")
+    save_data()
+    upload_github ()
