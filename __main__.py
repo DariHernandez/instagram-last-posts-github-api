@@ -1,5 +1,6 @@
 import os
 import math
+import json
 import requests
 from time import sleep
 from config import Config
@@ -8,9 +9,15 @@ from scraping_manager.automate import Web_scraping
 # Paths
 current_path = os.path.dirname (__file__)
 images_path = os.path.join (current_path, "imgs")
+json_path = os.path.join (current_path, "data.json")
 
+def download_image (url:str, filename:str):
+    """Download image from instagram and save it as a local file in imgs folder
 
-def download_image (url, filename):
+    Args:
+        url (str): instagram image url
+        filename (str): file name to save (.jpg)
+    """
     
     # Get image data
     res = requests.get (url)
@@ -22,6 +29,8 @@ def download_image (url, filename):
     image.close ()
 
 def main (): 
+    """Save instagram data in json file, and download images.
+    """
 
     # Get credentials
     credentials = Config ()
@@ -32,13 +41,13 @@ def main ():
     github_repo = credentials.get ("github_repo")
 
     # Open scraper
-    scraper = Web_scraping (web_page="https://www.instagram.com/",
-                            headless=show_browser, 
+    scraper = Web_scraping (headless=show_browser, 
                             chrome_folder=chrome_data_folder, 
                             start_killing=True)
     sleep (2)
 
     # Loop for each user in profile lists
+    data = {}
     for profile in profiles:
 
         profile_data = {}
@@ -120,6 +129,14 @@ def main ():
 
         # Save posts data
         profile_data["posts"] = posts
+    
+        # Save all profile data
+        data[profile] = profile_data
+
+    # save data in json file
+    with open (json_path, "w") as file:
+        file.write (json.dumps(data))
+
 
 if __name__ == "__main__":
     main()
