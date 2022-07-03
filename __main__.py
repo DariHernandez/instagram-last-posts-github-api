@@ -112,12 +112,14 @@ def main ():
             post_img_name = f"{profile} post {post_num}.jpg"
             download_image (post_img, post_img_name)
 
+            # save current post data
             posts.append ({
                 "image": f"{github_repo}/raw/master/imgs/{post_img_name.replace(' ', '%20')}",
                 "url": post_link
             })
 
-        print ("")
+        # Save posts data
+        profile_data["posts"] = posts
 
 if __name__ == "__main__":
     main()
