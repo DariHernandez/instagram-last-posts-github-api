@@ -64,11 +64,21 @@ def save_data ():
         scraper.refresh_selenium ()
 
         # Get profile image link
-        profile_photo_selector = 'img[data-testid="user-avatar"]'
-        image_url = scraper.get_attrib (profile_photo_selector, "src")
-        if not image_url:
-            profile_photo_selector = 'img[alt="Change profile photo"]'
+        image_url = "None"
+        while (image_url == "None"):
+
+            # Get image for self other user
+            profile_photo_selector = 'canvas + span._aa8h > img'
             image_url = scraper.get_attrib (profile_photo_selector, "src")
+
+            # get image from self user profile
+            if not image_url:
+                profile_photo_selector = 'img[alt="Change profile photo"]'
+                image_url = scraper.get_attrib (profile_photo_selector, "src")
+
+            # Try again
+            sleep (2)
+            scraper.refresh_selenium ()
 
         # Download profile image
         profile_photo_name = f"{profile} profile.jpg"
@@ -125,7 +135,10 @@ def save_data ():
 
             #  Download post image
             post_img_name = f"{profile} post {post_current_num}.jpg"
-            download_image (post_img, post_img_name)
+            try:
+                download_image (post_img, post_img_name)
+            except:
+                continue
 
             # save current post data
             posts.append ({
