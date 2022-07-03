@@ -105,11 +105,11 @@ def save_data ():
 
         # Get post info
         posts = []
-        for post_num in range (1, post_num+1):
+        for post_current_num in range (1, post_num+1):
 
             # Generate selectors
-            post_row = math.ceil (post_num/3)
-            post_column = post_num - ((post_row -1) * 3)
+            post_row = math.ceil (post_current_num/3)
+            post_column = post_current_num - ((post_row -1) * 3)
 
             selector_post_base = f"article._aayp div div ._ac7v._aang:nth-child({post_row}) div:nth-child({post_column})"
             post_link_selector = f"{selector_post_base} a"
@@ -120,7 +120,7 @@ def save_data ():
             post_img = scraper.get_attrib (post_img_selector, "src")
 
             #  Download post image
-            post_img_name = f"{profile} post {post_num}.jpg"
+            post_img_name = f"{profile} post {post_current_num}.jpg"
             download_image (post_img, post_img_name)
 
             # save current post data
@@ -140,6 +140,8 @@ def save_data ():
         file.write (json.dumps(data))
 
 def upload_github ():
+    """Do a commit and push to github, for update images and data  file
+    """
 
     # make commit and upload to github
     time_str = str(datetime.datetime.now())[:22]
@@ -148,6 +150,7 @@ def upload_github ():
     os.system (f'git add -A')
     os.system (f'git commit -m "update {time_str}"')
     os.system (f'git push origin master')
+
 
 if __name__ == "__main__":
     save_data()
