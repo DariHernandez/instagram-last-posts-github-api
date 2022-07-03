@@ -64,8 +64,8 @@ def save_data ():
         scraper.refresh_selenium ()
 
         # Get profile image link
-        image_url = "None"
-        while (image_url == "None"):
+        image_url = None
+        while (image_url == "None" or image_url == None):
 
             # Get image for self other user
             profile_photo_selector = 'canvas + span._aa8h > img'
@@ -73,7 +73,7 @@ def save_data ():
 
             # get image from self user profile
             if not image_url:
-                profile_photo_selector = 'img[alt="Change profile photo"]'
+                profile_photo_selector = 'img'
                 image_url = scraper.get_attrib (profile_photo_selector, "src")
 
             # Try again

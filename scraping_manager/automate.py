@@ -9,6 +9,8 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.by import By
+
 
 current_file = os.path.basename(__file__)
   
@@ -265,7 +267,7 @@ class Web_scraping ():
         Send data to specific input fill
         """
         
-        elem = self.driver.find_element_by_css_selector (selector)
+        elem = self.driver.find_element(By.CSS_SELECTOR, selector)
         elem.send_keys (data)
 
     
@@ -274,7 +276,7 @@ class Web_scraping ():
         Send click to specific element in the page
         """
         
-        elem = self.driver.find_element_by_css_selector (selector)
+        elem = self.driver.find_element(By.CSS_SELECTOR, selector)
         elem.click()
     
     
@@ -289,7 +291,7 @@ class Web_scraping ():
             if total_time < time_out: 
                 total_time += 1
                 try: 
-                    elem = self.driver.find_element_by_css_selector (selector)
+                    elem = self.driver.find_element(By.CSS_SELECTOR, selector)
                     elem.text
                     break
                 except:
@@ -317,7 +319,7 @@ class Web_scraping ():
             if total_time < time_out: 
                 total_time += 1
                 try: 
-                    elem = self.driver.find_element_by_css_selector (selector)
+                    elem = self.driver.find_element(By.CSS_SELECTOR, selector)
                     elem.text
                     time.sleep(self.basetime)
                     continue
@@ -333,7 +335,7 @@ class Web_scraping ():
         """
         
         try: 
-            elem = self.driver.find_element_by_css_selector (selector)
+            elem = self.driver.find_element(By.CSS_SELECTOR, selector)
             return elem.text
         except Exception as err: 
             # print (err)
@@ -347,7 +349,7 @@ class Web_scraping ():
         
         texts = []
         
-        elems = self.driver.find_elements_by_css_selector (selector)
+        elems = self.driver.find_elements(By.CSS_SELECTOR, selector)
         
         for elem in elems:         
             try: 
@@ -358,7 +360,7 @@ class Web_scraping ():
         return texts
 
     def set_attrib (self, selector, attrib_name, attrib_value):
-        elem = self.driver.find_element_by_css_selector (selector)
+        elem = self.driver.find_element(By.CSS_SELECTOR, selector)
         self.driver.execute_script(f"arguments[0].setAttribute('{attrib_name}', '{attrib_value}');", elem)
     
      
@@ -368,7 +370,7 @@ class Web_scraping ():
         """
         
         try: 
-            elem = self.driver.find_element_by_css_selector (selector)
+            elem = self.driver.find_element(By.CSS_SELECTOR, selector)
             return elem.get_attribute(attrib_name)
         except:
             return None
@@ -380,7 +382,7 @@ class Web_scraping ():
         """
         
         attributes = []
-        elems = self.driver.find_elements_by_css_selector (selector)
+        elems = self.driver.find_elements(By.CSS_SELECTOR, selector)
 
         for elem in elems:
 
@@ -407,7 +409,7 @@ class Web_scraping ():
         Return an specific element in the page
         """
         
-        elem = self.driver.find_element_by_css_selector (selector)
+        elem = self.driver.find_element(By.CSS_SELECTOR, selector)
         return elem
     
     
@@ -416,7 +418,7 @@ class Web_scraping ():
         Return a list of specific element in the page
         """
         
-        elems = self.driver.find_elements_by_css_selector (selector)
+        elems = self.driver.find_elements(By.CSS_SELECTOR, selector)
         return elems
     
     
@@ -469,7 +471,7 @@ class Web_scraping ():
         Send click with js, for hiden elements
         """
         
-        elem = self.driver.find_element_by_css_selector (selector)
+        elem = self.driver.find_element(By.CSS_SELECTOR, selector)
         self.driver.execute_script("arguments[0].click();", elem)
         
     
@@ -478,7 +480,7 @@ class Web_scraping ():
         Select specific elemet (with number) in a drop down elemet
         """
         
-        elem = self.driver.find_element_by_css_selector (selector)
+        elem = self.driver.find_element(By.CSS_SELECTOR, selector)
         
         elem.click()
         for _ in range(0, item_index):
