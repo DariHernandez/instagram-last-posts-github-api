@@ -160,6 +160,10 @@ def upload_github ():
     """Do a commit and push to github, for update images and data  file
     """
 
+    # Change folder
+    current_folder = os.path.dirname(__file__)
+    os.chdir (current_folder)
+
     # make commit and upload to github
     time_str = str(datetime.datetime.now())[:22]
 
